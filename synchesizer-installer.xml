@@ -2,7 +2,8 @@
     name="anogakki wave"
     description="Anogakki-like instrument based on SiON and wave."> 
   <author name="atsushieno"/> 
-  <menuHook location="toolbar" text="Add anogakki wave gadget"> 
+  <menuHook location="toolbar" text="Add anogakki wave gadget"
+    iconUrl="http://github.com/atsushieno/anowave/raw/master/synchesizer.png"> 
     <insertGadget url="http://github.com/atsushieno/anowave/raw/master/synchesizer.xml"/> 
   </menuHook> 
 </extension> 
