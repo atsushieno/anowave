@@ -127,7 +127,8 @@ function waveStateCallback() {
 	if (s.get('viewer') != wave.getViewer().getId()) {
 		x = s.get('x');
 		y = s.get('y');
-		doPlay(x,y);
+		mml = s.get('mml');
+		doPlay(x,y,mml);
 	}
 }
 
@@ -145,13 +146,26 @@ function canvasMouseDown(ev) {
 		x = ev.offsetX;
 		y = ev.offsetY;
 	}
-
-    if (AnoGakki.isOnWave)
-	  wave.getState().submitDelta({'x': x, 'y': y, 'viewer': wave.getViewer().getId()});
-	doPlay(x,y);
+	playLocal(x,y);
 }
 
-function doPlay(x,y) {
+function playLocal(x,y) {
+	var oct = Math.floor (x / 300) + 5;
+	var key = getNoteAt(x);
+	if (AnoGakki.autoplay_mml != null) {
+		var mml = AnoGakki.tonemml + "o5" + AnoGakki.autoplay_mml [AnoGakki.autoplay_index++];
+		if (AnoGakki.autoplay_index >= AnoGakki.autoplay_mml.length)
+			AnoGakki.autoplay_index = 0;
+	}
+	else
+		var mml = AnoGakki.tonemml + "o" + oct + key + "2";
+
+	if (AnoGakki.isOnWave)
+	  wave.getState().submitDelta({'x': x, 'y': y, 'mml': mml, 'viewer': wave.getViewer().getId()});
+	doPlay(x,y,mml);
+}
+
+function doPlay(x,y,mml) {
 	switch(Math.floor(Math.random() * 4)) {
 	case 0:
 		rippleArc(x,y,10, Math.floor(Math.random() * 3));
@@ -166,15 +180,6 @@ function doPlay(x,y) {
 		rippleLine(x,y,10, Math.floor(Math.random() * 3), Math.random() * Math.PI);
 		break;
 	}
-	var oct = Math.floor (x / 300) + 5;
-	var key = getNoteAt(x);
-	if (AnoGakki.autoplay_mml != null) {
-		var mml = AnoGakki.tonemml + "o5" + AnoGakki.autoplay_mml [AnoGakki.autoplay_index++];
-		if (AnoGakki.autoplay_index >= AnoGakki.autoplay_mml.length)
-			AnoGakki.autoplay_index = 0;
-	}
-	else
-		var mml = AnoGakki.tonemml + "o" + oct + key + "2";
 	SIOPM.compile(mml);
 }
 
