@@ -6,7 +6,7 @@ AnoGakki.isOnWave = typeof gadgets != "undefined";
 AnoGakki.simpleNotes = true;
 AnoGakki.autoplay_mml = null;
 AnoGakki.autoplay_index = 0;
-AnoGakki.tonemml = "@0";
+AnoGakki.tonemml = "@0,48,48,0,0,20s8 %11 v15";
 AnoGakki.baseUrl = AnoGakki.isOnWave ? "http://github.com/atsushieno/anowave/raw/master/" : "";
 
 var full_notes = ["c", "c+", "d", "d+", "e", "f", "f+", "g", "g+", "a", "a+", "b"];
