@@ -24,7 +24,7 @@ function rippleArc(x,y,r,c) {
 		ctx.beginPath();
 		ctx.lineWidth = 2;
 		ctx.strokeStyle = createColor (c, r * 5);
-		ctx.arc(x, y, 0.05 * r * r, 0, 2 * Math.PI, false);
+		ctx.arc(x, y, 0.07 * r * r, 0, 2 * Math.PI, false);
 		ctx.stroke();
 	} else if (r >= 100) {
 		clearTimeout(t);
@@ -34,7 +34,7 @@ function rippleArc(x,y,r,c) {
 		ctx.strokeStyle = baseColor;
 		var i = r - 50;
 		ctx.lineWidth = 5;
-		ctx.arc(x, y, 0.05 * i * i, 0, 2 * Math.PI, false);
+		ctx.arc(x, y, 0.07 * i * i, 0, 2 * Math.PI, false);
 		ctx.stroke();
 	}
 	if (r < 100)
@@ -63,6 +63,30 @@ function rippleRect(x,y,r,c,radius) {
 
 	if (r < 100)
 		var t = setTimeout("rippleRect(" + x + "," + y + "," + (r + 10) + "," + c + "," + radius + ")", 50, false);
+}
+
+function rippleTriangle(x,y,r,c,radius) {
+	var ctx = document.getElementById('synchesizer-canvas').getContext('2d');
+	isEraser = (r >= 50);
+
+	ctx.beginPath();
+	ctx.lineWidth = r < 50 ? 3 : 5;
+	ctx.strokeStyle = isEraser ? baseColor : createColor (c, (r * 5));
+	var i = r > 50 ? r - 50 : r;
+	var i = 0.12 * i * i;
+	ctx.translate(x,y);
+	ctx.rotate(radius);
+	var v = Math.sqrt(3) * 0.5;
+	ctx.moveTo(0, -i);
+	ctx.lineTo(i * v, i * v - 0.5 * i);
+	ctx.lineTo(-i * v, i * v - 0.5 * i);
+	ctx.lineTo(0, -i);
+	ctx.stroke();
+	ctx.rotate(-radius);
+	ctx.translate(-x,-y);
+
+	if (r < 100)
+		var t = setTimeout("rippleTriangle(" + x + "," + y + "," + (r + 10) + "," + c + "," + radius + ")", 50, false);
 }
 
 function rippleLine(x,y,r,c,radius) {
@@ -125,7 +149,7 @@ function canvasMouseDown(ev) {
 }
 
 function doPlay(x,y) {
-	switch(Math.floor(Math.random() * 3)) {
+	switch(Math.floor(Math.random() * 4)) {
 	case 0:
 		rippleArc(x,y,10, Math.floor(Math.random() * 3));
 		break;
@@ -133,6 +157,9 @@ function doPlay(x,y) {
 		rippleRect(x,y,10, Math.floor(Math.random() * 3), Math.random() * Math.PI);
 		break;
 	case 2:
+		rippleTriangle(x,y,10, Math.floor(Math.random() * 3), Math.random() * Math.PI);
+		break;
+	case 3:
 		rippleLine(x,y,10, Math.floor(Math.random() * 3), Math.random() * Math.PI);
 		break;
 	}
