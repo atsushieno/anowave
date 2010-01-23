@@ -4,6 +4,7 @@ if (typeof AnoGakki == "undefined") { // load only once
 AnoGakki = function() {};
 AnoGakki.isOnWave = typeof gadgets != "undefined";
 AnoGakki.simpleNotes = true;
+AnoGakki.tonemml = "@0";
 AnoGakki.baseUrl = AnoGakki.isOnWave ? "http://github.com/atsushieno/anowave/raw/master/" : "";
 
 var full_notes = ["c", "c+", "d", "d+", "e", "f", "f+", "g", "g+", "a", "a+", "b"];
@@ -165,20 +166,27 @@ function doPlay(x,y) {
 	}
 	var oct = Math.floor (x / 300) + 5;
 	var key = getNoteAt(x);
-	var tonemml = document.getElementById('synchesizer-tone-mml').value;
-	if (tonemml == "")
-		tonemml = "@0";
-	var mml = tonemml + "o" + oct + key + "2";
+	var mml = AnoGakki.tonemml + "o" + oct + key + "2";
 	SIOPM.compile(mml);
 }
 
 function getNoteAt(x) {
-	AnoGakki.simpleNotes = !document.getElementById ("synchesizer-use-full-notes").checked;
 	if (AnoGakki.simpleNotes)
 		return simple_notes [Math.floor ((x % 300) / (300 / 7))];
 	else
 		return full_notes [Math.floor ((x % 300) / (300 / 12))];
 }
+
+$(document.getElementById('synchesizer-tone-mml')).change(function(){
+	var mml = document.getElementById('synchesizer-tone-mml').value;
+	if (mml == "")
+		mml = "@0";
+	AnoGakki.tonemml = mml;
+});
+
+$(document.getElementById('synchesizer-use-full-notes')).change(function(){
+	AnoGakki.simpleNotes = !document.getElementById ("synchesizer-use-full-notes").checked;
+});
 
 $(document).ready(function(){
     if (AnoGakki.isOnWave)
