@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-  <ModulePrefs title="Synchesizer" width="500" height="300">
+  <ModulePrefs title="Synchesizer" width="500" height="400">
     <Require feature="rpc" />
     <Require feature="flash" />
     <Require feature="dynamic-height"/>
