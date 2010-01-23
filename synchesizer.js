@@ -22,7 +22,7 @@ function rippleArc(x,y,r,c) {
 	var ctx = document.getElementById('synchesizer-canvas').getContext('2d');
 	if (r < 50) {
 		ctx.beginPath();
-		ctx.lineWidth = 2;
+		ctx.lineWidth = 3;
 		ctx.strokeStyle = createColor (c, r * 5);
 		ctx.arc(x, y, 0.07 * r * r, 0, 2 * Math.PI, false);
 		ctx.stroke();
