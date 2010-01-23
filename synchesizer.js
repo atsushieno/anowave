@@ -165,7 +165,7 @@ function doPlay(x,y) {
 	}
 	var oct = Math.floor (x / 300) + 5;
 	var key = getNoteAt(x);
-	var mml = "@0 o" + oct + key + "2";
+	var mml = "@0,48,48,0,0,20s8 %11 v15 o" + oct + key + "2";
 	SIOPM.compile(mml);
 }
 
