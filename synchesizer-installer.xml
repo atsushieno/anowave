@@ -1,0 +1,8 @@
+<extension 
+    name="anogakki wave"
+    description="Anogakki-like instrument based on SiON and wave."> 
+  <author name="atsushieno"/> 
+  <menuHook location="toolbar" text="Add anogakki wave gadget"> 
+    <insertGadget url="http://veritas-vos-liberabit.com/tmp/2010/synchesizer/synchesizer.xml"/> 
+  </menuHook> 
+</extension> 

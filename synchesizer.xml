@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Synchesizer" width="500" height="300">
+    <Require feature="rpc" />
+    <Require feature="flash" />
+    <Require feature="dynamic-height"/>
+  </ModulePrefs>
+  <Content type="html">
+    <![CDATA[
+    <script type="text/javascript"
+       src="http://wave-api.appspot.com/public/wave.js"></script>
+    <script type="text/javascript" src="http://veritas-vos-liberabit.com/tmp/2010/synchesizer/jquery.js"></script>
+    <script type="text/javascript" src="http://veritas-vos-liberabit.com/tmp/2010/synchesizer/siopm.js"></script>
+    <script type="text/javascript" src="synchesizer.js"></script>
+</head>
+<body>
+
+<canvas id="synchesizer-canvas" width="500" height="300" style="position:absolute"></canvas>
+    ]]>
+  </Content>
+</Module>

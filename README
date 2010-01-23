@@ -1,0 +1,8 @@
+It is my toy project for google wave.
+
+It is one form of "ano-gakki" that can play together with other wave surfers.
+
+For those who don't know ano-gakki, it is on http://www.youtube.com/watch?v=NO7IOCVsCnk (it existed only virtually, until Japanese net geeks started to "create" such instruments).
+
+The sound engine is based on SiON sound generator / MML compiler.
+http://www.libspark.org/wiki/keim/SiON
