@@ -165,11 +165,15 @@ function doPlay(x,y) {
 	}
 	var oct = Math.floor (x / 300) + 5;
 	var key = getNoteAt(x);
-	var mml = "@0,48,48,0,0,20s8 %11 v15 o" + oct + key + "2";
+	var tonemml = document.getElementById('synchesizer-tone-mml').value;
+	if (tonemml == "")
+		tonemml = "@0";
+	var mml = tonemml + "o" + oct + key + "2";
 	SIOPM.compile(mml);
 }
 
 function getNoteAt(x) {
+	AnoGakki.simpleNotes = !document.getElementById ("synchesizer-use-full-notes").checked;
 	if (AnoGakki.simpleNotes)
 		return simple_notes [Math.floor ((x % 300) / (300 / 7))];
 	else
