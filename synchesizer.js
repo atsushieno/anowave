@@ -2,6 +2,7 @@ if (typeof AnoGakki == "undefined") { // load only once
 // ++++++++++++++++++++
 
 AnoGakki = function() {};
+AnoGakki.playerHostID = Math.random();
 AnoGakki.isOnWave = typeof gadgets != "undefined";
 AnoGakki.simpleNotes = true;
 AnoGakki.autoplay_mml = null;
@@ -124,17 +125,12 @@ function createColor(c, v) {
 
 function waveStateCallback() {
 	var s = wave.getState();
-	if (s.get('viewer') != wave.getViewer().getId()) {
+	if (s.get('playerHostID') != AnoGakki.playerHostID) {
 		x = s.get('x');
 		y = s.get('y');
 		mml = s.get('mml');
 		doPlay(x,y,mml);
 	}
-}
-
-function waveOnLoadCallback() {
-	if (wave && wave.isInWaveContainer())
-		wave.setStateCallback(waveStateCallback);
 }
 
 function canvasMouseDown(ev) {
@@ -160,8 +156,9 @@ function playLocal(x,y) {
 	else
 		var mml = AnoGakki.tonemml + "o" + oct + key + "2";
 
-	if (AnoGakki.isOnWave)
-	  wave.getState().submitDelta({'x': x, 'y': y, 'mml': mml, 'viewer': wave.getViewer().getId()});
+	if (AnoGakki.isOnWave) {
+	  wave.getState().submitDelta({'x': x, 'y': y, 'mml': mml, 'player': wave.getViewer().getId(), 'playerHostID': AnoGakki.playerHostID});
+	}
 	doPlay(x,y,mml);
 }
 
@@ -211,8 +208,6 @@ $(document.getElementById('synchesizer-use-full-notes')).change(function(){
 });
 
 $(document).ready(function(){
-    if (AnoGakki.isOnWave)
-      gadgets.util.registerOnLoadHandler(waveOnLoadCallback);
 
 	SIOPM.onLoad = function() { 
 	}
@@ -232,8 +227,11 @@ $(document).ready(function(){
 	var canvas = document.getElementById('synchesizer-canvas');
 	canvas.addEventListener('mousedown', canvasMouseDown, false);
 	canvas.getContext('2d').fillRect(0, 0, 500, 300);
-});
 
+	if (AnoGakki.isOnWave)
+		if (wave && wave.isInWaveContainer())
+			wave.setStateCallback(waveStateCallback);
+});
 
 // ++++++++++++++++++++
 } // load only once
