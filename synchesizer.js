@@ -4,6 +4,8 @@ if (typeof AnoGakki == "undefined") { // load only once
 AnoGakki = function() {};
 AnoGakki.isOnWave = typeof gadgets != "undefined";
 AnoGakki.simpleNotes = true;
+AnoGakki.autoplay_mml = null;
+AnoGakki.autoplay_index = 0;
 AnoGakki.tonemml = "@0";
 AnoGakki.baseUrl = AnoGakki.isOnWave ? "http://github.com/atsushieno/anowave/raw/master/" : "";
 
@@ -166,7 +168,13 @@ function doPlay(x,y) {
 	}
 	var oct = Math.floor (x / 300) + 5;
 	var key = getNoteAt(x);
-	var mml = AnoGakki.tonemml + "o" + oct + key + "2";
+	if (AnoGakki.autoplay_mml != null) {
+		var mml = AnoGakki.tonemml + "o5" + AnoGakki.autoplay_mml [AnoGakki.autoplay_index++];
+		if (AnoGakki.autoplay_index >= AnoGakki.autoplay_mml.length)
+			AnoGakki.autoplay_index = 0;
+	}
+	else
+		var mml = AnoGakki.tonemml + "o" + oct + key + "2";
 	SIOPM.compile(mml);
 }
 
@@ -176,6 +184,15 @@ function getNoteAt(x) {
 	else
 		return full_notes [Math.floor ((x % 300) / (300 / 12))];
 }
+
+$(document.getElementById('synchesizer-autoplay-mml')).change(function(){
+	var mml = document.getElementById('synchesizer-autoplay-mml').value;
+	if (mml == "")
+		AnoGakki.autoplay_mml = null;
+	else
+		AnoGakki.autoplay_mml = mml.split (" ");
+	AnoGakki.autoplay_index = 0;
+});
 
 $(document.getElementById('synchesizer-tone-mml')).change(function(){
 	var mml = document.getElementById('synchesizer-tone-mml').value;
