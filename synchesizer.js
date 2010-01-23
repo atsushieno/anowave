@@ -99,7 +99,8 @@ function canvasMouseDown(ev) {
 		y = ev.offsetY;
 	}
 
-	//wave.getState().submitDelta({'x': x, 'y': y, 'viewer': wave.getViewer().getId()});
+    if (AnoGakki.isOnWave)
+	  wave.getState().submitDelta({'x': x, 'y': y, 'viewer': wave.getViewer().getId()});
 	doPlay(x,y);
 }
 
