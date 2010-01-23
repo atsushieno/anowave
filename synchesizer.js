@@ -41,29 +41,28 @@ function rippleArc(x,y,r,c) {
 		var t = setTimeout("rippleArc(" + x + "," + y + "," + (r + 10) + "," + c + ")", 50, false);
 }
 
-function rippleRect(x,y,r,c) {
+function rippleRect(x,y,r,c,radius) {
 	var ctx = document.getElementById('synchesizer-canvas').getContext('2d');
-	if (r < 50) {
-		ctx.beginPath();
-		ctx.lineWidth = 2;
-		ctx.strokeStyle = createColor (c, (r * 5));
-		var i = 0.1 * r * r;
-		ctx.rect(x - 0.5 * i, y - 0.5 * i, i, i);
-		ctx.stroke();
-	} else if (r >= 100) {
-		clearTimeout(t);
-		t = 0;
-	} else {
-		ctx.beginPath();
-		ctx.strokeStyle = baseColor;
-		var i = r - 50;
-		i = 0.1 * i * i;
-		ctx.lineWidth = 5;
-		ctx.rect(x - 0.5 * i, y - 0.5 * i, i, i);
-		ctx.stroke();
-	}
+	isEraser = (r >= 50);
+
+	ctx.beginPath();
+	ctx.lineWidth = r < 50 ? 3 : 5;
+	ctx.strokeStyle = isEraser ? baseColor : createColor (c, (r * 5));
+	var i = r > 50 ? r - 50 : r;
+	var i = 0.07 * i * i;
+	ctx.translate(x,y);
+	ctx.rotate(radius);
+	ctx.moveTo(i,i);
+	ctx.lineTo(-i,i);
+	ctx.lineTo(-i,-i);
+	ctx.lineTo(i,-i);
+	ctx.lineTo(i,i);
+	ctx.stroke();
+	ctx.rotate(-radius);
+	ctx.translate(-x,-y);
+
 	if (r < 100)
-		var t = setTimeout("rippleRect(" + x + "," + y + "," + (r + 10) + "," + c + ")", 50, false);
+		var t = setTimeout("rippleRect(" + x + "," + y + "," + (r + 10) + "," + c + "," + radius + ")", 50, false);
 }
 
 function rippleLine(x,y,r,c,radius) {
@@ -131,7 +130,7 @@ function doPlay(x,y) {
 		rippleArc(x,y,10, Math.floor(Math.random() * 3));
 		break;
 	case 1:
-		rippleRect(x,y,10, Math.floor(Math.random() * 3));
+		rippleRect(x,y,10, Math.floor(Math.random() * 3), Math.random() * Math.PI);
 		break;
 	case 2:
 		rippleLine(x,y,10, Math.floor(Math.random() * 3), Math.random() * Math.PI);
