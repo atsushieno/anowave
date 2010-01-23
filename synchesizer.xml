@@ -9,9 +9,9 @@
     <![CDATA[
     <script type="text/javascript"
        src="http://wave-api.appspot.com/public/wave.js"></script>
-    <script type="text/javascript" src="http://veritas-vos-liberabit.com/tmp/2010/synchesizer/jquery.js"></script>
-    <script type="text/javascript" src="http://veritas-vos-liberabit.com/tmp/2010/synchesizer/siopm.js"></script>
-    <script type="text/javascript" src="synchesizer.js"></script>
+    <script type="text/javascript" src="http://github.com/atsushieno/anowave/raw/master/jquery.js"></script>
+    <script type="text/javascript" src="http://github.com/atsushieno/anowave/raw/master/siopm.js"></script>
+    <script type="text/javascript" src="http://github.com/atsushieno/anowave/raw/master/synchesizer.js"></script>
 </head>
 <body>
 

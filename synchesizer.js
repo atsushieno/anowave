@@ -1,5 +1,14 @@
+if (typeof AnoGakki == "undefined") { // load only once
+// ++++++++++++++++++++
+
 AnoGakki = function() {};
+AnoGakki.isOnWave = typeof gadgets != "undefined";
 AnoGakki.simpleNotes = true;
+AnoGakki.baseUrl = AnoGakki.isOnWave ? "http://github.com/atsushieno/anowave/raw/master/" : "";
+
+var full_notes = ["c", "c+", "d", "d+", "e", "f", "f+", "g", "g+", "a", "a+", "b"];
+var simple_notes = ["c", "d", "e", "f", "g", "a", "b"];
+var baseColor = "#000000";
 
 function togglePlay() {
 	if (SIOPM.playing) {
@@ -8,29 +17,6 @@ function togglePlay() {
 		SIOPM.noteOn(61);
 	}
 }
-      
-$(document).ready(function(){
-	SIOPM.onLoad = function() { 
-	}
-	SIOPM.onCompileProgress = function() { 
-	}
-	SIOPM.onCompileComplete = function() {
-		SIOPM.play();
-	}
-	SIOPM.onStreamStart = function() {
-	}
-	SIOPM.onError = function(errorMessage) {
-		Alert(errorMessage);
-	}
-	SIOPM.urlSWF = "http://veritas-vos-liberabit.com/tmp/2010/synchesizer/siopm.swf";
-	SIOPM.initialize();
-
-	var canvas = document.getElementById('synchesizer-canvas');
-	canvas.addEventListener('mousedown', canvasMouseDown, false);
-	canvas.getContext('2d').fillRect(0, 0, 500, 300);
-});
-
-var baseColor = "#000000";
 
 function rippleArc(x,y,r,c) {
 	var ctx = document.getElementById('synchesizer-canvas').getContext('2d');
@@ -103,8 +89,6 @@ function waveOnLoadCallback() {
 		wave.setStateCallback(waveStateCallback);
 }
 
-gadgets.util.registerOnLoadHandler(waveOnLoadCallback);
-
 function canvasMouseDown(ev) {
 	var x, y;
 	if (ev.layerX || ev.layerX == 0) { // Firefox
@@ -115,7 +99,7 @@ function canvasMouseDown(ev) {
 		y = ev.offsetY;
 	}
 
-	wave.getState().submitDelta({'x': x, 'y': y, 'viewer': wave.getViewer().getId()});
+	//wave.getState().submitDelta({'x': x, 'y': y, 'viewer': wave.getViewer().getId()});
 	doPlay(x,y);
 }
 
@@ -131,9 +115,6 @@ function doPlay(x,y) {
 	SIOPM.compile(mml);
 }
 
-var full_notes = ["c", "c+", "d", "d+", "e", "f", "f+", "g", "g+", "a", "a+", "b"];
-var simple_notes = ["c", "d", "e", "f", "g", "a", "b"];
-
 function getNoteAt(x) {
 	if (AnoGakki.simpleNotes)
 		return simple_notes [Math.floor ((x % 300) / (300 / 7))];
@@ -141,3 +122,30 @@ function getNoteAt(x) {
 		return full_notes [Math.floor ((x % 300) / (300 / 12))];
 }
 
+$(document).ready(function(){
+    if (AnoGakki.isOnWave)
+      gadgets.util.registerOnLoadHandler(waveOnLoadCallback);
+
+	SIOPM.onLoad = function() { 
+	}
+	SIOPM.onCompileProgress = function() { 
+	}
+	SIOPM.onCompileComplete = function() {
+		SIOPM.play();
+	}
+	SIOPM.onStreamStart = function() {
+	}
+	SIOPM.onError = function(errorMessage) {
+		Alert(errorMessage);
+	}
+	SIOPM.urlSWF = AnoGakki.baseUrl + "siopm.swf";
+	SIOPM.initialize();
+
+	var canvas = document.getElementById('synchesizer-canvas');
+	canvas.addEventListener('mousedown', canvasMouseDown, false);
+	canvas.getContext('2d').fillRect(0, 0, 500, 300);
+});
+
+
+// ++++++++++++++++++++
+} // load only once
