@@ -37,7 +37,8 @@ function rippleArc(x,y,r,c) {
 		ctx.arc(x, y, 0.05 * i * i, 0, 2 * Math.PI, false);
 		ctx.stroke();
 	}
-	var t = setTimeout("rippleArc(" + x + "," + y + "," + (r + 10) + "," + c + ")", 50, false);
+	if (r < 100)
+		var t = setTimeout("rippleArc(" + x + "," + y + "," + (r + 10) + "," + c + ")", 50, false);
 }
 
 function rippleRect(x,y,r,c) {
@@ -61,7 +62,27 @@ function rippleRect(x,y,r,c) {
 		ctx.rect(x - 0.5 * i, y - 0.5 * i, i, i);
 		ctx.stroke();
 	}
-	var t = setTimeout("rippleRect(" + x + "," + y + "," + (r + 10) + "," + c + ")", 50, false);
+	if (r < 100)
+		var t = setTimeout("rippleRect(" + x + "," + y + "," + (r + 10) + "," + c + ")", 50, false);
+}
+
+function rippleLine(x,y,r,c,radius) {
+	var ctx = document.getElementById('synchesizer-canvas').getContext('2d');
+	isEraser = (r >= 100);
+
+	ctx.lineWidth = 2 * r / 10;
+	ctx.strokeStyle = isEraser ? baseColor : createColor (c, (r * 3)) ;
+	ctx.beginPath();
+	var deltaX = Math.cos(radius) * 500;
+	var deltaY = Math.sin(radius) * 500;
+	ctx.moveTo(x + deltaX, y + deltaY);
+	ctx.lineTo(x - deltaX, y - deltaY);
+	ctx.moveTo(x + deltaX, y + deltaY);
+	ctx.lineTo(x - deltaX, y - deltaY);
+	ctx.stroke();
+
+	if (r < 100)
+		var t = setTimeout("rippleLine(" + x + "," + y + "," + (r + 10) + "," + c + "," + radius + ")", 50, false);
 }
 
 function createColor(c, v) {
@@ -105,11 +126,17 @@ function canvasMouseDown(ev) {
 }
 
 function doPlay(x,y) {
-	if (Math.random() > 0.5)
+	switch(Math.floor(Math.random() * 3)) {
+	case 0:
 		rippleArc(x,y,10, Math.floor(Math.random() * 3));
-	else
+		break;
+	case 1:
 		rippleRect(x,y,10, Math.floor(Math.random() * 3));
-	
+		break;
+	case 2:
+		rippleLine(x,y,10, Math.floor(Math.random() * 3), Math.random() * Math.PI);
+		break;
+	}
 	var oct = Math.floor (x / 300) + 5;
 	var key = getNoteAt(x);
 	var mml = "@0 o" + oct + key + "2";
